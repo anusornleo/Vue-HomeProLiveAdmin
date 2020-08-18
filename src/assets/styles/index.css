@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* :root{
+    --bg-background-primary:green;
+    --bg-background-secondary:red;
+    --bg-background-ternary:teal;
+} */
