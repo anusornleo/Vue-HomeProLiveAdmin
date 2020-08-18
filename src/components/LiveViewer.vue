@@ -98,7 +98,7 @@ export default {
 
     this.startRecording()
 
-    this.start()
+    this.startTimer()
 
     setTimeout(this.getWidth, 100);
 
@@ -130,7 +130,7 @@ export default {
       //   this.player.record().saveAs({ video: "my-video-file-name.webm" });
     },
     submitVideo() {
-      this.player.record().saveAs({video: "my-video-file-name.mp4"});
+      // this.player.record().saveAs({video: "my-video-file-name.mp4"});
     },
     goHome() {
       this.$router.push({path: '/'})
@@ -148,7 +148,7 @@ export default {
         return "#f56565";
       }
     },
-    start() {
+    startTimer() {
       this.$store.state.secondLive = 0
       this.interval = setInterval(() => {
         this.continueTime()

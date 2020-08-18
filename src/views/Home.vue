@@ -1,6 +1,8 @@
 <template>
-  <div class="container mx-auto">
-
+  <div>
+    <div class="flex flex-wrap items-start justify-between">
+      <h1 class="text-3xl mb-6">Home</h1>
+    </div>
     <h1>{{ status.type.name }} : {{ status.type.value }}</h1>
     <h1>{{ status.effectiveType.name }} : {{ status.effectiveType.value }}</h1>
     <h1>{{ status.rtt.name }} : {{ status.rtt.value }}</h1>

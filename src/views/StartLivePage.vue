@@ -143,17 +143,20 @@ export default {
       }
     },
     goLiveNow() {
+      let channel = Date.now().toString()
       this.$store.commit('setCurrentOption', {
         appId: AGORA_APP_ID,
         camera: this.currentCamera,
         microphone: this.currentMicrophone,
-        channel: this.modelTitle
+        channel: channel,
+        title: this.modelTitle
       })
       this.$store.commit('setIsLive', true)
-      db.collection("CurrentLive").doc(this.modelTitle).set({
+      db.collection("CurrentLive").doc(channel).set({
         startTime: Date.now(),
-        channelName: this.modelTitle,
-        onLive: true
+        channelName: channel,
+        onLive: true,
+        title: this.modelTitle
       }).then(() => {
         this.$notify({
           title: 'Success',

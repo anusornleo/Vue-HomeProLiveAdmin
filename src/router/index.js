@@ -6,6 +6,9 @@ const StartLivePage = () => import('../views/StartLivePage')
 const Setting = () => import('../views/Setting')
 const FindProduct = () => import('../views/FindProduct')
 const LiveNow = () => import('../views/LiveNow')
+const ChatPage = () => import('../views/ChatPage')
+const LoginPage = () => import('../views/LoginPage')
+const RegisterPage = () => import('../views/RegisterPage')
 
 Vue.use(VueRouter)
 
@@ -34,6 +37,21 @@ const routes = [
         path: '/live_now',
         name: 'LiveNow',
         component: LiveNow
+    },
+    {
+        path: '/chat',
+        name: 'ChatPage',
+        component: ChatPage
+    },
+    {
+        path: '/login',
+        name: 'LoginPage',
+        component: LoginPage
+    },
+    {
+        path: '/register',
+        name: 'RegisterPage',
+        component: RegisterPage
     }
 ]
 

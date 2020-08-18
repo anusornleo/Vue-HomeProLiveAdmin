@@ -2,9 +2,9 @@
   <div>
     <div class="flex flex-wrap">
       <div id="define-width" ref="infoBox" class="bg-green-100 w-1/2">
-        <div class="flex flex-wrap justify-between">
+        <div class="flex flex-wrap justify-between mb-4">
           <div style="flex:1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-            <span class="text-3xl">{{ $store.state.currentOption.channel }}</span>
+            <span class="text-3xl">{{ $store.state.currentOption.title }}</span>
           </div>
           <div
               @click="toEndLive()"
@@ -16,7 +16,7 @@
           </div>
         </div>
         <div style="height:460px "></div>
-        <Timer/>
+        <LiveNowInfo/>
       </div>
       <div class="bg-red-100 h-12 w-1/2 pl-5">
         <h1 class="text-xl mb-6 mt-2">Comments</h1>
@@ -32,7 +32,7 @@
 import AgoraRTC from "agora-rtc-sdk-ng";
 import firebase from "firebase";
 import Message from "@/components/Message";
-import Timer from "@/components/Timer";
+import LiveNowInfo from "@/components/LiveNowInfo";
 // import LiveViewer from "@/components/LiveViewer";
 
 const db = firebase.firestore();
@@ -41,7 +41,7 @@ export default {
   name: "LiveNow",
   components: {
     Message,
-    Timer
+    LiveNowInfo
     // LiveViewer
   },
   props: [],
@@ -95,7 +95,9 @@ export default {
     },
     toEndLive() {
       this.$store.state.endLive = true
-      db.collection('CurrentLive').doc(this.$store.state.currentOption.channel).delete().then(() => {
+      db.collection('CurrentLive').doc(this.$store.state.currentOption.channel).update({
+        onLive: false,
+      }).then(() => {
         this.$notify({
           title: 'Success',
           message: 'End Live Complete',

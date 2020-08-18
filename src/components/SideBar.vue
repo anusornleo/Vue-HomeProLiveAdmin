@@ -37,6 +37,11 @@ export default {
           icon: "live_tv",
         },
         {
+          title: "Chat",
+          href: "/chat",
+          icon: "chat"
+        },
+        {
           title: "Setting",
           href: "/setting",
           icon: "settings",
