@@ -6,6 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        currentAdmin: null,
         currentMenu: 0,
         currentOption: null,
         isLive: false,

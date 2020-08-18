@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import firebase from "firebase";
+
 export default {
   name: "RegisterPage",
   data() {
@@ -25,11 +27,11 @@ export default {
   },
   methods: {
     register() {
-      let data = {
-        email: this.email,
-        password: this.password
-      }
-      console.log(data)
+      firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+          .then(() => {
+
+              }
+          ).catch()
     }
   }
 }
