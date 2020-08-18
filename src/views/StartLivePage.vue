@@ -152,7 +152,8 @@ export default {
       this.$store.commit('setIsLive', true)
       db.collection("CurrentLive").doc(this.modelTitle).set({
         startTime: Date.now(),
-        channelName: this.modelTitle
+        channelName: this.modelTitle,
+        onLive: true
       }).then(() => {
         this.$notify({
           title: 'Success',

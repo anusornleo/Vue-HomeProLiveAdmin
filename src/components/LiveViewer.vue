@@ -256,7 +256,7 @@ export default {
   position: absolute;
   z-index: 10;
   top: 76px;
-  left: 106px;
+  left: 105px;
   transition: .3s;
   transform: translate(0%, 0%);
 }

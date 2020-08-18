@@ -3,7 +3,9 @@
     <div class="flex flex-wrap">
       <div id="define-width" ref="infoBox" class="bg-green-100 w-1/2">
         <div class="flex flex-wrap justify-between">
-          <h1 class="text-3xl mb-6">Start to Live</h1>
+          <div style="flex:1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            <span class="text-3xl">{{ $store.state.currentOption.channel }}</span>
+          </div>
           <div
               @click="toEndLive()"
               style="height: 45px"
