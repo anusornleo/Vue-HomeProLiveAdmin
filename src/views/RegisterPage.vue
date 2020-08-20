@@ -29,9 +29,18 @@ export default {
     register() {
       firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
           .then(() => {
-
+                this.$store.commit("setCurrentAdmin", this.email)
+                this.$notify({
+                  title: 'Success',
+                  message: 'This is a success message',
+                  type: 'success'
+                });
               }
-          ).catch()
+          ).catch(e => {
+        this.$alert(e, 'Error', {
+          confirmButtonText: 'OK',
+        });
+      })
     }
   }
 }

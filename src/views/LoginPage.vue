@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import firebase from 'firebase'
+
 export default {
   name: "LoginPage",
   data() {
@@ -23,13 +25,29 @@ export default {
       password: ''
     }
   },
+  beforeCreate() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.$router.replace("/")
+      }
+    });
+  },
   methods: {
     login() {
-      let data = {
-        email: this.email,
-        password: this.password
-      }
-      console.log(data)
+      firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+          .then(() => {
+            this.$store.commit('setCurrentAdmin', this.email)
+            this.$notify({
+              title: 'Success',
+              message: 'Login Success',
+              type: 'success'
+            });
+          })
+          .catch((e) => {
+            this.$alert(e, 'Error', {
+              confirmButtonText: 'OK',
+            });
+          })
     }
   }
 }

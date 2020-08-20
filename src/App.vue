@@ -2,7 +2,7 @@
   <div id="app">
     <SideBar/>
     <LiveViewer v-if="$store.state.isLive" :endLive="false"/>
-    <div class="pt-4 pl-26 pr-6">
+    <div class="pl-26 pr-6" :class="$route.path === '/chat'?'pt-0':'pt-4'">
       <router-view/>
     </div>
   </div>

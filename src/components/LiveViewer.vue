@@ -31,30 +31,32 @@ import RecordRTC from "recordrtc";
 
 import Record from "videojs-record/dist/videojs.record.js";
 
+// Live Viewer is player live video from admin. It can Show Video Live and Record Video in Live
 export default {
   name: "LiveViewer",
   data() {
     return {
       client: {},
-      localStream: {
+      localStream: {  // sent video to stream
         audioTrack: null,
         videoTrack: null
       },
-      localTracks: {
+      localTracks: { // get video to show in video player
         videoTrack: null,
         audioTrack: {
+          // if don't declare this fn. It view error because render finish after use fn
           getVolumeLevel: function () {
             return 0;
           },
         }
       },
-      interval: null,
-      player: "",
+      interval: null, // interval counter time
+      player: "", // player to record but it not show in screen
       isSaveDisabled: true,
       isStartRecording: false,
-      videoWidth: 0,
-      videoHeight: 0,
-      options: {
+      videoWidth: 0, // width of live viewer
+      videoHeight: 0, // height of video viewer
+      options: { // option of recorder
         controls: true,
         bigPlayButton: false,
         controlBar: {
@@ -70,18 +72,25 @@ export default {
             pip: false,
             audio: true,
             video: true,
-            maxLength: 3000,
+            maxLength: 3000, // max length of video
             debug: true,
+            // video: {
+            //   // video constraints: use preset device
+            //   deviceId: {exact: this.$store.state.currentOption.camera.deviceId}
+            // }
           },
         },
       },
     }
   },
   async created() {
+    // create video in admin
     this.client = AgoraRTC.createClient({mode: 'live', codec: "h264", role: 'host'})
 
+    // join channel in agora
     await this.client.join(AGORA_APP_ID, this.$store.state.currentOption.channel, null);
 
+    // create local track
     [
       this.localTracks.audioTrack,
       this.localTracks.videoTrack,
@@ -90,52 +99,67 @@ export default {
       AgoraRTC.createCameraVideoTrack(),
     ]);
 
+    // set camera and mic from previous status
     this.setCamera()
 
+    // play live video in div by id
     this.localTracks.videoTrack.play("pre-local-player");
 
+    // publish to online
     await this.client.publish(Object.values(this.localTracks));
 
+    // start record video
     this.startRecording()
 
+    // start timer
     this.startTimer()
 
+    // get width after render
     setTimeout(this.getWidth, 100);
 
   },
 
   methods: {
+    // set camera and mic by id from vuex
     setCamera() {
       this.localTracks.videoTrack.setDevice(this.$store.state.currentOption.camera.deviceId);
       this.localTracks.audioTrack.setDevice(this.$store.state.currentOption.microphone.deviceId)
+      this.player.record().setVideoInput(this.$store.state.currentOption.camera.deviceId);
+      this.player.record().setAudioInput(this.$store.state.currentOption.microphone.deviceId);
     },
+
+    // stop live
     async leave() {
-      this.localTracks.audioTrack.stop()
+      this.localTracks.audioTrack.stop() // stop mic and video
       this.localTracks.videoTrack.stop()
-      this.localTracks.audioTrack.close()
+      this.localTracks.audioTrack.close() // close mic and video
       this.localTracks.videoTrack.close()
-      this.localTracks.audioTrack = undefined
+      this.localTracks.audioTrack = undefined // undefine value
       this.localTracks.videoTrack = undefined
 
-      await this.client.leave();
+      await this.client.leave(); // leave from channel (people in channel can't view live)
     },
+    // start record fn
     startRecording() {
       this.isStartRecording = true;
       this.player.record().getDevice();
     },
+    // stop record fn
     stopRecord() {
       this.isStartRecording = false;
       this.player.record().stop();
+      // set delay to save video
       setTimeout(this.submitVideo, 1000);
-      //   this.player.record().saveAs({ video: "my-video-file-name.webm" });
+      // this.player.record().saveAs({video: "my-video-file-name.webm"});
     },
     submitVideo() {
-      // this.player.record().saveAs({video: "my-video-file-name.mp4"});
+      this.player.record().saveAs({video: "my-video-file-name.mp4"});
     },
     goHome() {
       this.$router.push({path: '/'})
     },
     getWidth() {
+      // get width and height of video to define div video
       this.videoWidth = this.localTracks.videoTrack._videoWidth
       this.videoHeight = this.localTracks.videoTrack._videoHeight
     },
@@ -149,16 +173,19 @@ export default {
       }
     },
     startTimer() {
-      this.$store.state.secondLive = 0
+      this.$store.state.secondLive = 0 // set timer = 0
+      // counter +1 every 1 sec
       this.interval = setInterval(() => {
         this.continueTime()
       }, 1000)
     },
     continueTime() {
+      // +1 and save new second in vuex
       this.$store.state.secondLive += 1
     }
   },
   mounted() {
+    // detect event by mount fn
     this.player = videojs("myVideo", this.options, () => {
       // print version information at startup
       let msg =
@@ -214,16 +241,17 @@ export default {
     },
   },
   watch: {
+    // get endLive event from vuex (from endLive button in LiveNow page)
     endLive(val) {
       if (val === true) {
-        this.stopRecord()
-        this.leave()
-        this.$store.state.endLive = false
-        this.$store.commit('setIsLive', false)
-        clearInterval(this.interval)
+        this.stopRecord() // stop rec
+        this.leave() // leave channel
+        this.$store.state.endLive = false // set endLive state
+        this.$store.commit('setIsLive', false) // set IsLive as false
+        clearInterval(this.interval)  // clear timer
       }
     }
-  }
+  },
 }
 </script>
 
@@ -266,10 +294,10 @@ export default {
   position: fixed;
   z-index: 10;
   top: 100%;
-  left: 100%;
+  left: 0;
   height: 200px;
   min-width: 200px;
   min-height: 200px;
-  transform: translate(-100%, -100%);
+  transform: translate(102px, -100%);
 }
 </style>

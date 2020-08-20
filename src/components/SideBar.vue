@@ -52,7 +52,6 @@ export default {
   methods: {
     goto(route) {
       if (this.$route.path !== route) {
-        console.log(route)
         if (route === '/startlive') {
           if (this.$store.state.isLive === false) {
             this.$router.push({path: '/startlive'});
