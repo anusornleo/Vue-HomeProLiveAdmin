@@ -20,7 +20,6 @@
       </div>
       <div class="bg-red-100 h-12 w-1/2 pl-5" style="display: flex;flex-direction: column;height: 100%">
         <h1 class="text-xl mb-6 mt-2">Comments</h1>
-        {{ $store.state.selectedMessage }}
         <div id="chat" class="w-full overflow-auto" style="height: 80vh;">
           <Message v-for="message in allMessage" :key="message.id" :message="message"/>
         </div>

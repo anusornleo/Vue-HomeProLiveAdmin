@@ -3,9 +3,8 @@
        :class="{'bg-gray-400':hilight}">
     <div class="flex-1" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
       <h1>{{ data.chatWith }}</h1>
-      <span>xxxmoxmomxo omdoxm opmdp
-        pomdopmpmdpomdp omdpoc
-      </span>
+      <span>{{ data.lastMessage }}</span>
+      {{ data.id }}
     </div>
   </div>
 </template>

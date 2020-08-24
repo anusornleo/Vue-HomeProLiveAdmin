@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
+// import firebase from "firebase";
+
+// const db = firebase.firestore()
 
 Vue.use(Vuex)
 
@@ -34,7 +37,12 @@ export default new Vuex.Store({
             state.selectedMessage = message
         }
     },
-    actions: {},
+    actions: {
+        // loadUserChats(context) {
+        //     let chat = context.state.selectChat
+        //     db.collection('')
+        // }
+    },
     modules: {},
     plugins: [new VuexPersistence().plugin]
 

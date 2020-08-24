@@ -1,11 +1,11 @@
 <template>
   <div>
     <div v-if="hasChat" class="flex flex-wrap h-screen">
-      <div class=" w-80 bg-green-200">
+      <div class=" w-80 bg-green-200 overflow-y-auto">
         <ChatWithUserList v-for="list in allUser" :data="list" :key="list.id"/>
       </div>
       <div class="flex-1 bg-red-200 pl-4">
-        <ChatWithUserPanel/>
+        <ChatPanelTest/>
       </div>
     </div>
     <div v-else></div>
@@ -15,7 +15,8 @@
 <script>
 import firebase from "firebase";
 import ChatWithUserList from "@/components/ChatWithUserList";
-import ChatWithUserPanel from "@/components/ChatWithUserPanel";
+// import ChatWithUserPanel from "@/components/ChatWithUserPanel";
+import ChatPanelTest from "@/components/ChatPanelTest";
 
 const db = firebase.firestore();
 
@@ -23,7 +24,7 @@ export default {
   name: "ChatPage",
   components: {
     ChatWithUserList,
-    ChatWithUserPanel
+    ChatPanelTest
   },
   data() {
     return {
@@ -47,17 +48,27 @@ export default {
   },
   created() {
     db.collection('Chatroom')
+        .orderBy('timeStamp')
         .onSnapshot(snapshot => snapshot.docChanges().forEach(change => {
           if (change.type === 'added') {
             let doc = change.doc
             if (this.$store.state.selectChat === null) {
               this.$store.commit('setSelectChat', doc.data().channelName + doc.data().chatWith)
             }
-            this.allUser.push({
+            this.allUser.unshift({
               chatWith: doc.data().chatWith,
               channelName: doc.data().channelName,
-              title: doc.data().title
+              title: doc.data().title,
+              lastMessage: doc.data().lastMsg,
+              timeStamp: doc.data().timeStamp,
+              id: doc.id
             })
+          } else if (change.type === 'modified') {
+            let idDoc = change.doc.id
+            let index = this.allUser.findIndex(x => x.id === idDoc);
+            this.allUser[index].lastMessage = change.doc.data().lastMsg
+            this.allUser[index].timeStamp = change.doc.data().timeStamp
+            this.allUser.sort((a, b) => (a.timeStamp < b.timeStamp) ? 1 : -1)
           }
         }))
 

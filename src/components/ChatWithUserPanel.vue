@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-orange-200 w-full h-screen flex flex-col">
-    <div class="flex-1 overflow-y-auto">
+  <div class="w-full h-screen flex flex-col">
+    <div id="chat" class="bg-orange-200 flex-1 overflow-y-auto">
       <Message v-for="message in allMessage" :key="message.id" :message="message"/>
     </div>
     <div class="h-16 w-full bg-blue-200">
@@ -35,11 +35,13 @@ export default {
     return {
       message: '',
       allMessage: [],
-      unsubscribe: null
+      unsubscribe: null,
+      scrollPosition: 0, // position of scroll chat panel
+      chatHeight: 0, // height of chat panel
+      scrollHeight: 0, // scrollPosition + chatHeight
     }
   },
   created() {
-    console.log("1111")
     this.getChatData(this.$store.state.selectChat)
     // db.collection('Chatroom').doc("1597735995654tester1").collection('ChatMessage')
     //     .onSnapshot(snapshot => snapshot.docChanges().forEach(change => {
@@ -55,6 +57,7 @@ export default {
   },
   methods: {
     getChatData(selectChat) {
+      // setTimeout(this.scrollToEnd, 1000);
       this.unsubscribe = db.collection("Chatroom").doc(selectChat).collection('ChatMessage').orderBy("timeStamp",)
           .onSnapshot(
               snapshot => {
@@ -70,6 +73,30 @@ export default {
                   }
                 })
               })
+    },
+    scrollToEnd() {
+      // get element chat panel
+      let chat = this.$el.querySelector("#chat");
+      this.chatHeight = chat.offsetHeight
+
+      // check scroll of chat panel
+      chat.addEventListener("scroll", this.handleScroll);
+
+      console.log(this.chatHeight + this.scrollPosition >= this.scrollHeight - 40)
+      console.log('chat height \t' + this.chatHeight + '\nscrollPosition \t' + this.scrollPosition + '\nscrollHeight \t' + this.scrollHeight)
+
+      // if admin scroll top. auto scroll is disable
+      if (this.chatHeight + this.scrollPosition >= this.scrollHeight - 40) {
+
+        chat.scrollTop = chat.scrollHeight;
+      }
+      this.scrollHeight = chat.scrollHeight
+
+
+    },
+    handleScroll(e) {
+      console.log("###################" + e.target.scrollTop)
+      this.scrollPosition = e.target.scrollTop
     },
     sentMessage() {
       if (this.canSent) {
@@ -89,7 +116,7 @@ export default {
           });
         })
       }
-    }
+    },
   },
   computed: {
     getSelectChat() {
@@ -106,6 +133,13 @@ export default {
       this.unsubscribe()
       this.getChatData(val)
     }
+  },
+  destroyed() {
+    let chat = this.$el.querySelector("#chat");
+    // chat.removeEventListener('scroll', this.onScroll)
+    console.log("destroy")
+    chat.removeEventListener("scroll", this.handleScroll);
+
   },
 }
 </script>
