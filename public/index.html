@@ -2,24 +2,31 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <title><%= htmlWebpackPlugin.options.title %></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 
 <body>
-  <noscript>
+<noscript>
     <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
-      Please enable it to continue.</strong>
-  </noscript>
-  <div id="app"></div>
+        Please enable it to continue.</strong>
+</noscript>
+<div id="app"></div>
 
-  <!-- AgoraRTC_N -->
-  <!-- <script src="https://download.agora.io/sdk/web/AgoraRTC_N.js"></script> -->
-  <!-- <script src="https://cdn.agora.io/sdk/release/AgoraRTCSDK-3.1.1.js"></script> -->
+<!-- AgoraRTC_N -->
+<!-- <script src="https://download.agora.io/sdk/web/AgoraRTC_N.js"></script> -->
+<!-- <script src="https://cdn.agora.io/sdk/release/AgoraRTCSDK-3.1.1.js"></script> -->
+<!--<script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){}; initApiClient()"-->
+<!--        onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>-->
+
+<!--<script async defer src="https://apis.google.com/js/client:plusone.js" onload="this.onload=function(){}; render()"-->
+<!--        onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>-->
+<script src="cors_upload.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 </body>
 
 </html>

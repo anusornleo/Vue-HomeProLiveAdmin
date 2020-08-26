@@ -1,10 +1,10 @@
 <template>
   <div>
     <div v-if="hasChat" class="flex flex-wrap h-screen">
-      <div class=" w-80 bg-green-200 overflow-y-auto">
+      <div class=" w-80 overflow-y-auto border-r-2 border-gray-400">
         <ChatWithUserList v-for="list in allUser" :data="list" :key="list.id"/>
       </div>
-      <div class="flex-1 bg-red-200 pl-4">
+      <div class="flex-1 pl-4">
         <ChatPanelTest/>
       </div>
     </div>
@@ -61,17 +61,23 @@ export default {
               title: doc.data().title,
               lastMessage: doc.data().lastMsg,
               timeStamp: doc.data().timeStamp,
-              id: doc.id
+              id: doc.id,
+              isAdminRead: doc.data().isAdminRead
             })
           } else if (change.type === 'modified') {
             let idDoc = change.doc.id
             let index = this.allUser.findIndex(x => x.id === idDoc);
             this.allUser[index].lastMessage = change.doc.data().lastMsg
             this.allUser[index].timeStamp = change.doc.data().timeStamp
-            this.allUser.sort((a, b) => (a.timeStamp < b.timeStamp) ? 1 : -1)
+            this.allUser[index].isAdminRead = change.doc.data().isAdminRead
+            this.sortByTime(change.doc.data().isAdminRead)
           }
         }))
-
+  },
+  methods: {
+    sortByTime() {
+      this.allUser.sort((a, b) => (a.timeStamp < b.timeStamp) ? 1 : -1)
+    }
   }
 }
 </script>

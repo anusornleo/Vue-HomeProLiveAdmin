@@ -1,10 +1,10 @@
 <template>
-  <div @click="selectChat" class="flex items-center bg-gray-200 h-16 border-b-2"
-       :class="{'bg-gray-400':hilight}">
+  <div @click="selectChat" class="flex items-center h-16 border-b-2"
+       :class="{'bg-gray-200':hilight,'font-extrabold':!data.isAdminRead}">
     <div class="flex-1" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
       <h1>{{ data.chatWith }}</h1>
       <span>{{ data.lastMessage }}</span>
-      {{ data.id }}
+      {{ data.isAdminRead }}
     </div>
   </div>
 </template>

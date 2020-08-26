@@ -215,7 +215,9 @@ export default {
     // user completed recording and stream is available
     this.player.on("finishRecord", () => {
       this.isSaveDisabled = false;
-      console.log("finished recording: ", this.player.recordedData);
+      this.$store.state.recordedVideo = this.player.recordedData
+      console.log("##################Finish record")
+      console.log(this.player.recordedData);
     });
   },
   computed: {

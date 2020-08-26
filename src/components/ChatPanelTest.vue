@@ -1,20 +1,21 @@
 <template>
   <div class="w-full h-screen flex flex-col">
+    <Loader v-if="isLoading"/>
     <!--    {{ this.scrollHeight }} \\ {{ this.totalChatHeight }} \\ {{ this.chatInnerHeight }}-->
-    <div ref="chatContainer" id="chatPanel" v-on:scroll="onScroll" class="bg-orange-200 flex-1 overflow-y-auto">
-      <div id="chatInner" class="bg-green-100">
+    <div ref="chatContainer" id="chatPanel" v-on:scroll="onScroll" class=" flex-1 overflow-y-auto">
+      <div id="chatInner">
         <Message v-for="message in chatMessage" :key="message.id" :message="message"/>
+        <div v-if="isUserRead" class="text-right text-gray-500 text-sm">Read</div>
       </div>
     </div>
-    <div class="h-16 w-full bg-blue-200">
+    <div class="h-16 w-full">
       <div class=" flex flex-wrap">
-        <div class="mr-5" style="flex:4">
-          <el-input placeholder="Find by SKU" v-model="message"></el-input>
+        <div class="mr-5" style="flex:1">
+          <el-input placeholder="Sent Message" v-model="message"></el-input>
         </div>
         <button
             @click="sentMessage"
-            class="bg-primary p-2 hover:bg-primary_active text-white font-bold h-10 rounded"
-            style="flex:1"
+            class="bg-primary p-2 hover:bg-primary_active text-white font-bold h-10 rounded w-24"
             :class="{'bg-primary_active':message.length === 0}"
         >
           <span class="material-icons">send</span>
@@ -27,13 +28,15 @@
 <script>
 import Message from '@/components/Message'
 import firebase from 'firebase'
+import Loader from "@/components/Loader";
 
 const db = firebase.firestore()
 
 export default {
   name: "ChatPanelTest",
   components: {
-    Message
+    Message,
+    Loader
   },
   data() {
     return {
@@ -44,11 +47,14 @@ export default {
       loading: false,
       message: '',
       scrollHeight: 0,
-      chatInnerHeight: 0
+      chatInnerHeight: 0,
+      isLoading: false,
+      isUserRead: false
     }
   },
   mounted() {
     this.loadChat()
+    this.getReadState()
   },
   computed: {
     messages() {
@@ -65,7 +71,17 @@ export default {
     // }
   },
   methods: {
+    getReadState() {
+      db.collection("Chatroom").doc(this.$store.state.selectChat)
+          .onSnapshot(snapshot => {
+            this.isUserRead = snapshot.data().isUserRead
+            if (this.isUserRead) {
+              this.scrollToEnd()
+            }
+          });
+    },
     loadChat() {
+      this.isLoading = true
       this.totalChatHeight = this.$refs.chatContainer.scrollHeight
       if (this.$store.state.selectChat !== null) {
         this.chatMessage = []
@@ -75,6 +91,14 @@ export default {
             .orderBy('timeStamp')
             .onSnapshot(snapshot => snapshot.docChanges().forEach(change => {
               if (change.type === 'added') {
+                if (change.newIndex === snapshot.docChanges().length - 1 || snapshot.docChanges().length === 1) {
+                  db.collection('Chatroom')
+                      .doc(this.$store.state.selectChat).update({
+                    isAdminRead: true
+                  }).then(() => {
+                    this.isLoading = false
+                  })
+                }
                 this.newMessageAdd(change.doc, true)
               }
             }))
@@ -120,21 +144,20 @@ export default {
         let sentTime = firebase.firestore.Timestamp.fromDate(new Date())
         db.collection('Chatroom')
             .doc(this.$store.state.selectChat)
-            .collection('ChatMessage')
-            .add({
-              msg: this.message,
-              role: 'admin',
-              timeStamp: sentTime,
-              username: 'admin'
+            .update({
+              isUserRead: false,
+              lastMsg: this.message,
+              timeStamp: sentTime
             })
             .then(() => {
-              console.log("dddd")
               db.collection('Chatroom')
                   .doc(this.$store.state.selectChat)
-                  .update({
-                    isAdminRead: false,
-                    lastMsg: this.message,
-                    timeStamp: sentTime
+                  .collection('ChatMessage')
+                  .add({
+                    msg: this.message,
+                    role: 'admin',
+                    timeStamp: sentTime,
+                    username: 'admin'
                   })
               this.message = ''
             })

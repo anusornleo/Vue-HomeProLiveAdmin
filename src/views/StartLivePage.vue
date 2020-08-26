@@ -20,6 +20,24 @@
           <div class="w-3/4">
             <el-input placeholder="Please input" v-model="modelTitle"></el-input>
           </div>
+          <div class="w-1/4 text-xl">Thumbnail</div>
+          <div class="w-3/4">
+            <div class="flex w-full items-center justify-center bg-grey-lighter h-64">
+              <label
+                  class="w-full h-full text-gray-500 flex flex-col items-center bg-white text-blue rounded-lg tracking-wide border border-blue cursor-pointer hover:bg-gray-200">
+                <label v-if="previewImage===null" class="text-base leading-normal" style="margin-top: 115px;">
+                  <span>Select JPG file</span>
+                  <input type="file" accept="image/jpeg" @change=uploadImage class="hidden"/>
+                </label>
+                <label v-else>
+                  <img alt="" :src="previewImage" class="uploading-image h-64"/>
+                  <input type="file" accept="image/jpeg" @change=uploadImage class="hidden"/>
+                </label>
+              </label>
+            </div>
+            <!--            <img alt="" :src="previewImage" class="uploading-image h-64"/>-->
+            <!--            <input type="file" accept="image/jpeg" @change=uploadImage>-->
+          </div>
           <div class="w-1/4 text-xl">Camera</div>
           <div class="w-3/4">
             <el-select v-model="currentCamera" placeholder="Select" style="width:100%">
@@ -72,6 +90,7 @@ import CardProduct from "../components/CardProduct";
 import firebase from "firebase";
 
 const db = firebase.firestore();
+const imageUpload = firebase.storage()
 
 export default {
   name: "StartLivePage",
@@ -90,6 +109,11 @@ export default {
         },
       ],
       modelTitle: "",
+      thumbnail: null,
+      imageUrl: null,
+      previewImage: null,
+      fileImage: null,
+      urlImage: null,
       currentCamera: null,
       currentMicrophone: null,
       currentResolution: null,
@@ -172,53 +196,73 @@ export default {
     },
     // start live now
     goLiveNow() {
+      this.$store.state.isLoading = true
       let channel = Date.now().toString() // define channel by datetime now
 
-      // store current option in vuex
-      this.$store.commit('setCurrentOption', {
-        appId: AGORA_APP_ID,
-        camera: this.currentCamera,
-        microphone: this.currentMicrophone,
-        channel: channel,
-        title: this.modelTitle
-      })
-      this.$store.commit('setIsLive', true) // change live state
+      imageUpload.ref("thumbnail/" + channel + '.jpg').put(this.fileImage).then(
+          () => {
+            imageUpload.ref("thumbnail/" + channel + '.jpg').getDownloadURL()
+                .then((url) => {
+                  // save live data in firebase
+                  db.collection("CurrentLive").doc(channel).set({
+                    startTime: Date.now(),
+                    channelName: channel,
+                    onLive: true,
+                    title: this.modelTitle,
+                    thumbnail: url
+                  }).then(() => {
 
-      // save live data in firebase
-      db.collection("CurrentLive").doc(channel).set({
-        startTime: Date.now(),
-        channelName: channel,
-        onLive: true,
-        title: this.modelTitle
-      }).then(() => {
-        this.$notify({
-          title: 'Success',
-          message: 'Start Live Success',
-          type: 'success'
-        });
+                    // store current option in vuex
+                    this.$store.commit('setCurrentOption', {
+                      appId: AGORA_APP_ID,
+                      camera: this.currentCamera,
+                      microphone: this.currentMicrophone,
+                      channel: channel,
+                      title: this.modelTitle,
+                      thumbnail: url
+                    })
+                    this.$store.commit('setIsLive', true) // change live state
 
-        // change route to live_now page
-        this.$router.push({path: 'live_now'})
-      }).catch(e => {
+                    this.$notify({
+                      title: 'Success',
+                      message: 'Start Live Success',
+                      type: 'success'
+                    });
 
-        // notify if have error
-        this.$notify({
-          title: 'Error',
-          message: e,
-          type: 'error'
-        });
-      })
+                    this.$store.state.isLoading = false
+
+                    // change route to live_now page
+                    this.$router.push({path: 'live_now'})
+                  }).catch(e => {
+                    this.$store.state.isLoading = false
+
+                    // notify if have error
+                    this.$notify({
+                      title: 'Error',
+                      message: e,
+                      type: 'error'
+                    });
+                  })
+                })
+                .catch()
+          }
+      ).catch()
     },
     goFindProduct() {
       // this.getVideo()
       // console.log(this.localTracks.videoTrack._videoHeight)
       this.$router.push({path: "findproduct"});
     },
-    getVideo() {
-      let v = document.getElementsByTagName('video');
-      v[0].addEventListener("loadedmetadata", function (e) {
-        console.log('e = ' + e)
-      }, false);
+
+    uploadImage(e) {
+      this.fileImage = e.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(this.fileImage);
+      reader.onload = e => {
+        this.previewImage = e.target.result;
+        console.log(this.previewImage);
+      };
+
     }
   },
   computed: {
@@ -249,7 +293,7 @@ export default {
 
 <style scoped>
 .player {
-  height: 426px;
+  height: 500px;
 }
 
 .el-select > .el-input {
@@ -265,5 +309,32 @@ export default {
 
 .el-progress >>> .el-progress-bar__outer {
   height: 20px !important;
+}
+
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>

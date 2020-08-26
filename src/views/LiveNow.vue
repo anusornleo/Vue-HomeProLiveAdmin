@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex flex-wrap">
-      <div id="define-width" ref="infoBox" class="bg-green-100 w-1/2">
+      <div id="define-width" ref="infoBox" class="w-1/2">
         <div class="flex flex-wrap justify-between mb-4">
           <div style="flex:1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
             <span class="text-3xl">{{ $store.state.currentOption.title }}</span>
@@ -18,7 +18,7 @@
         <div style="height:460px "></div>
         <LiveNowInfo/>
       </div>
-      <div class="bg-red-100 h-12 w-1/2 pl-5" style="display: flex;flex-direction: column;height: 100%">
+      <div class="h-12 w-1/2 pl-5" style="display: flex;flex-direction: column;height: 100%">
         <h1 class="text-xl mb-6 mt-2">Comments</h1>
         <div id="chat" class="w-full overflow-auto" style="height: 80vh;">
           <Message v-for="message in allMessage" :key="message.id" :message="message"/>
@@ -28,13 +28,19 @@
             <div class="mr-5" style="flex:4">
               <el-input placeholder="Find by SKU" v-model="message"></el-input>
             </div>
-            <button
-                @click="sentMessage"
-                class="bg-primary p-2 hover:bg-primary_active text-white font-bold h-10 rounded"
-                style="flex:1"
-                :class="{'bg-primary_active':!canSent}"
+            <button v-if="canSent"
+                    @click="sentMessage"
+                    class="bg-primary p-2 hover:bg-primary_active text-white font-bold h-10 rounded"
+                    style="flex:1"
             >
               <span class="material-icons">send</span>
+            </button>
+            <button v-else
+                    @click="cancelMessage"
+                    class="bg-red-500 p-2 hover:bg-red-700 text-white font-bold h-10 rounded"
+                    style="flex:1"
+            >
+              <span class="">Cancel</span>
             </button>
           </div>
         </div>
@@ -103,18 +109,23 @@ export default {
     },
 
     sentMessage() {
+      let timeStamp = firebase.firestore.Timestamp.fromDate(new Date())
       db.collection("Chatroom").doc(this.infoLive.channel + this.$store.state.selectedMessage.username)
           .set({
             channelName: this.infoLive.channel,
             chatWith: this.$store.state.selectedMessage.username,
-            title: this.infoLive.title
+            title: this.infoLive.title,
+            isUserRead: false,
+            timeStamp: timeStamp,
+            lastMsg: this.message
           }).then(() => {
             db.collection('Chatroom').doc(this.infoLive.channel + this.$store.state.selectedMessage.username).collection("ChatMessage")
                 .add({
                   msg: this.message,
                   role: 'admin',
-                  timeStamp: firebase.firestore.Timestamp.fromDate(new Date()),
-                  username: this.$store.state.selectedMessage.username
+                  timeStamp: timeStamp,
+                  username: this.$store.state.selectedMessage.username,
+
                 }).then(() => {
               this.$store.state.selectedMessage = null
             })
@@ -126,6 +137,9 @@ export default {
           .catch(e => {
             console.log(e)
           })
+    },
+    cancelMessage() {
+      this.$store.state.selectedMessage = null
     },
     // score to bottom always
     scrollToEnd() {

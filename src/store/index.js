@@ -18,7 +18,13 @@ export default new Vuex.Store({
         secondLive: 0,
         currentChatWithUser: null,
         selectChat: null,
-        selectedMessage: null
+        selectedMessage: null,
+        isLoading: false,
+        isUserReadCurrentChat: false,
+        isAdminReadCurrentChat: false,
+        recordedVideo: null,
+        googleApiUserProfile: null,
+        googleApiUserAuth: null
     },
     mutations: {
         setCurrentOption(state, option) {
@@ -35,6 +41,12 @@ export default new Vuex.Store({
         },
         setSelectedMessage(state, message) {
             state.selectedMessage = message
+        },
+        setGoogleApiUserProfile(state, data) {
+            state.googleApiUserProfile = data
+        },
+        setGoogleApiUserAuth(state, data) {
+            state.googleApiUserAuth = data
         }
     },
     actions: {
