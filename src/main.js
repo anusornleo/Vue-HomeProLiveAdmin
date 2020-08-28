@@ -8,6 +8,7 @@ import './assets/styles/element-variables.scss'
 import {firebaseConfig} from './config/firebase.config'
 import firebase from 'firebase'
 import VueGoogleApi from 'vue-google-api'
+import Moment from 'moment'
 // import VueGAPI from 'vue-gapi'
 // import '@/cors_upload'
 
@@ -30,6 +31,7 @@ firebase.initializeApp(firebaseConfig)
 // Vue.use(VueGAPI, apiConfig)
 Vue.use(VueGoogleApi, apiConfig)
 Vue.use(ElementUI);
+Vue.use(Moment)
 // Vue.use(axios)
 
 new

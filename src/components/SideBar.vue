@@ -17,6 +17,16 @@
         <div v-else class="absolute w-20 text-center mt-12 text-white">{{ menu.title }}</div>
       </div>
     </div>
+
+    <div
+        v-if="$store.state.currentAdmin === null"
+        :class="$route.path === '/login'?'bg-primary_active':'bg-primary'"
+        class="w-20 h-20 bg-primary hover:bg-primary_select cursor-pointer"
+        @click="goLogin"
+    >
+      <span class="absolute material-icons mt-5 text-center w-20 text-white">login</span>
+      <div class="absolute w-20 text-center mt-12 text-white">login</div>
+    </div>
   </div>
 </template>
 
@@ -72,6 +82,9 @@ export default {
       } else {
         return this.$route.path === href;
       }
+    },
+    goLogin() {
+      this.$router.push({path: '/login'});
     }
   },
 };

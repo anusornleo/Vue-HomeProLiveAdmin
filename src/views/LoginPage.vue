@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto bg-red-100" style="width: 32rem">
+  <div class="mx-auto" style="width: 32rem">
     <div class="mt-32 mb-6">
       <div class="mb-2">Email</div>
       <el-input placeholder="Please input" v-model="email"></el-input>

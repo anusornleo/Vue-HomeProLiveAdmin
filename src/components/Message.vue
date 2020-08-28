@@ -15,7 +15,7 @@
       <div class="bg-gray-300 inline-block px-3 py-1 rounded-lg mt-3" style="max-width: 500px">
         <span class="text-primary font-bold">{{ message.username }}</span> : {{ message.message }}
       </div>
-      <div>{{ message.timeStamp.toDate() }}</div>
+      <div class="text-xs text-gray-500">{{ dateFormat(message.timeStamp.toDate()) }}</div>
     </div>
 
     <!--message in chat from admin-->
@@ -25,13 +25,15 @@
           {{ message.message }}
         </div>
       </div>
-      <div class="text-right">{{ message.timeStamp.toDate() }}</div>
+      <div class="text-right text-xs text-gray-500">{{ dateFormat(message.timeStamp.toDate()) }}</div>
     </div>
   </div>
 
 </template>
 
 <script>
+import * as moment from "moment/moment";
+
 export default {
   name: "Message",
   props: ['message'],
@@ -39,6 +41,11 @@ export default {
     return {}
   },
   methods: {
+    dateFormat(sec) {
+      moment.locale("th");
+      return moment(sec).format("LLL");
+      // return sec;
+    },
     setSelectMessage(message) {
       this.$store.state.selectedMessage = message
     }
