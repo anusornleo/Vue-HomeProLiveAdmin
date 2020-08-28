@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div class="flex flex-wrap items-start justify-between">
       <h1 class="text-3xl mb-6">Setting</h1>
     </div>
@@ -16,20 +15,20 @@
 
     <div class="text-xl mt-10">Agora App ID</div>
 
-    <UploadYoutube/>
+    <!--    <UploadYoutube/>-->
   </div>
 </template>
 
 <script>
 
 import firebase from 'firebase'
-import UploadYoutube from "@/components/UploadYoutube";
+// import UploadYoutube from "@/components/UploadYoutube";
 import UploadAccount from "@/components/UploadAccount";
 
 export default {
   name: "Setting",
   components: {
-    UploadYoutube,
+    // UploadYoutube,
     UploadAccount
   },
   methods: {

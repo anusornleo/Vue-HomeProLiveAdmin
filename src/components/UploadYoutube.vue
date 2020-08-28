@@ -1,8 +1,10 @@
 <template>
-  <div class="h-24 bg-green-100 shadow-md rounded-md" style="width: 30rem">
-    {{ typeof $store.state.recordedVideo }}
-    <div v-if="$store.state.recordedVideo !== null">Can upload</div>
+  <div class="w-80 bg-white shadow-lg rounded-md fixed positionPanel p-3">
+    <!--    <div v-if="$store.state.recordedVideo !== null">Can upload</div>-->
     <!--    <button @click="uploadVideo">Upload</button>-->
+    <div>Upload Record to Youtube</div>
+    <el-progress :percentage="percent"></el-progress>
+    <i class="el-icon-circle-close absolute bg-white p-1 rounded-full position-close shadow-md hover:bg-gray-300"></i>
   </div>
 </template>
 
@@ -12,10 +14,12 @@
 export default {
   name: "UploadYoutube",
   data() {
-    return {}
+    return {
+      percent: 0
+    }
   },
   created() {
-
+    // setTimeout(this.uploadVideo, 5000)
   },
   methods: {
     uploadVideo() {
@@ -30,7 +34,7 @@ export default {
       //   },
       //   status: {
       //     uploadStatus: "uploaded",
-      //     privacyStatus: "public",
+      //     privacyStatus: "unlisted",
       //     // publishAt: Date.now(),
       //     license: "creativeCommon",
       //     embeddable: true,
@@ -95,5 +99,14 @@ export default {
 </script>
 
 <style scoped>
+.positionPanel {
+  z-index: 10;
+  bottom: 32px;
+  left: 105px;
+}
 
+.position-close {
+  right: -8px;
+  top: -8px;
+}
 </style>

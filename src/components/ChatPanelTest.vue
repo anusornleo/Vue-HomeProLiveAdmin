@@ -110,7 +110,8 @@ export default {
           message: doc.data().msg,
           username: doc.data().username,
           type: 'inchat',
-          role: doc.data().role
+          role: doc.data().role,
+          timeStamp: doc.data().timeStamp
         })
         // if (this.scrollHeight + this.totalChatHeight === this.chatInnerHeight) {
         this.scrollToEnd()
