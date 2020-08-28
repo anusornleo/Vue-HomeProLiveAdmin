@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="hasChat" class="flex flex-wrap h-screen">
-      <div class=" w-80 overflow-y-auto border-r-2 border-gray-400">
+      <div class="h-screen w-80 overflow-y-auto border-r-2 border-gray-400 overflow-y-auto">
         <ChatWithUserList v-for="list in allUser" :data="list" :key="list.id"/>
       </div>
       <div class="flex-1 pl-4">

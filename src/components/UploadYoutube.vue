@@ -1,90 +1,99 @@
-<!--<template>-->
-<!--  <div>-->
-<!--    {{ this.$gapi.getUserData().accessToken }}-->
-<!--    <button @click="login">Login</button>-->
-<!--    <button @click="logout">Logout</button>-->
-<!--    <button @click="uploadVideo">Upload</button>-->
-<!--  </div>-->
-<!--</template>-->
+<template>
+  <div class="h-24 bg-green-100 shadow-md rounded-md" style="width: 30rem">
+    {{ typeof $store.state.recordedVideo }}
+    <div v-if="$store.state.recordedVideo !== null">Can upload</div>
+    <!--    <button @click="uploadVideo">Upload</button>-->
+  </div>
+</template>
 
-<!--<script>-->
-<!--/* eslint-disable */-->
+<script>
+/* eslint-disable */
 
-<!--export default {-->
-<!--  name: "UploadYoutube",-->
-<!--  data() {-->
-<!--    return {}-->
-<!--  },-->
-<!--  created() {-->
-<!--    // this.$getGapiClient().then((gapi) => {-->
-<!--    //   // gapi.sheets.spreadsheet.get(...)-->
-<!--    //   // ...-->
-<!--    //   gapi.auth2.Basic-->
-<!--    // })-->
-<!--    // this.handleAuth();-->
-<!--    console.log(this.$store.state.recordedVideo)-->
-<!--    console.log(this.$gapi.getUserData())-->
+export default {
+  name: "UploadYoutube",
+  data() {
+    return {}
+  },
+  created() {
 
-<!--  },-->
-<!--  methods: {-->
-<!--    login() {-->
-<!--      if (this.$gapi.isAuthenticated() !== true) {-->
-<!--        this.$login()-->
-<!--      }-->
-<!--    },-->
-<!--    logout() {-->
-<!--      this.$gapi.logout()-->
-<!--    },-->
-<!--    uploadVideo() {-->
-<!--      let metadata = {-->
-<!--        snippet: {-->
-<!--          title: 'testxxxxxrrrrr',-->
-<!--          description: 'test',-->
-<!--          tags: ['youtube-cors-upload'],-->
-<!--          categoryId: 22-->
-<!--        },-->
-<!--        status: {-->
-<!--          privacyStatus: 'private'-->
-<!--        }-->
-<!--      };-->
-<!--      let uploader = new MediaUploader({-->
-<!--        baseUrl: 'https://www.googleapis.com/upload/youtube/v3/videos',-->
-<!--        file: this.$store.state.recordedVideo,-->
-<!--        token: this.$gapi.getUserData().accessToken,-->
-<!--        params: {-->
-<!--          part: Object.keys(metadata).join(',')-->
-<!--        },-->
-<!--        onError(data) {-->
-<!--          let message = data-->
-<!--          try {-->
-<!--            let errorResponse = JSON.parse(data);-->
-<!--            message = errorResponse.error.message;-->
-<!--          } finally {-->
-<!--            alert(message);-->
-<!--          }-->
-<!--        },-->
-<!--        onComplete(data) {-->
-<!--          let uploadResponse = JSON.parse(data);-->
-<!--          let videoId = uploadResponse.id;-->
-<!--          alert("uuuuuu " + videoId)-->
-<!--        }-->
-<!--      })-->
-<!--      uploader.upload();-->
-<!--    }-->
-<!--  },-->
-<!--  mounted() {-->
-<!--    let recaptchaScript = document.createElement('script')-->
-<!--    recaptchaScript.setAttribute('src', 'cors_upload.js')-->
-<!--    document.head.appendChild(recaptchaScript)-->
-<!--  },-->
-<!--  watch: {-->
-<!--    '$store.state.recordedVideo'(val) {-->
-<!--      console.log(val)-->
-<!--    }-->
-<!--  }-->
-<!--}-->
-<!--</script>-->
+  },
+  methods: {
+    uploadVideo() {
+      this.$store.state.recordedVideo = null
+      console.log("Uploaded Video")
+      // let metadata = {
+      //   snippet: {
+      //     title: 'HomePro Live Test Demo 2',
+      //     description: 'Test to upload HomePro Live in YouTube. It will show private for me.',
+      //     tags: ['youtube-cors-upload', 'upload', 'homepro'],
+      //     categoryId: 22
+      //   },
+      //   status: {
+      //     uploadStatus: "uploaded",
+      //     privacyStatus: "public",
+      //     // publishAt: Date.now(),
+      //     license: "creativeCommon",
+      //     embeddable: true,
+      //     publicStatsViewable: true,
+      //     madeForKids: true,
+      //   },
+      // };
+      // console.log(Object.keys(metadata).join(','))
+      // console.log(metadata)
+      // let uploader = new MediaUploader({
+      //   baseUrl: 'https://www.googleapis.com/upload/youtube/v3/videos',
+      //   file: this.$store.state.recordedVideo,
+      //   token: this.$store.state.googleApiUserAuth.access_token,
+      //   metadata: metadata,
+      //   params: {
+      //     part: Object.keys(metadata).join(',')
+      //   },
+      //   onError(data) {
+      //     let message = data
+      //     try {
+      //       let errorResponse = JSON.parse(data);
+      //       message = errorResponse.error.message;
+      //     } finally {
+      //       alert(data);
+      //     }
+      //   },
+      //   onComplete(data) {
+      //     let uploadResponse = JSON.parse(data);
+      //     let videoId = uploadResponse.id;
+      //     this.$store.state.recordedVideo = null
+      //     alert("uuuuuu " + videoId)
+      //   },
+      //   onProgress(data) {
+      //     let currentTime = Date.now();
+      //     let bytesUploaded = data.loaded;
+      //     let totalBytes = data.total;
+      //     // The times are in millis, so we need to divide by 1000 to get seconds.
+      //     let bytesPerSecond = bytesUploaded / ((currentTime) / 1000);
+      //     let estimatedSecondsRemaining = (totalBytes - bytesUploaded) / bytesPerSecond;
+      //     let percentageComplete = (bytesUploaded * 100) / totalBytes;
+      //
+      //     console.log(bytesPerSecond + "\n" + estimatedSecondsRemaining + "\n" + percentageComplete)
+      //   }
+      // })
+      // uploader.upload();
+    }
+  },
+  mounted() {
+    let recaptchaScript = document.createElement('script')
+    recaptchaScript.setAttribute('src', 'cors_upload.js')
+    document.head.appendChild(recaptchaScript)
+  },
+  watch: {
+    '$store.state.recordedVideo'(val) {
+      if (val != null) {
+        console.log("next to upload")
+        this.uploadVideo()
+      }
+    }
+  }
+}
+</script>
 
-<!--<style scoped>-->
+<style scoped>
 
-<!--</style>-->
+</style>

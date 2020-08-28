@@ -8,26 +8,28 @@
     <div class="text-xl">Upload to Youtube Account</div>
     <UploadAccount/>
 
-    <div class="text-xl">Admin Account</div>
+    <div class="text-xl mt-10">Admin Account</div>
     <div>{{ $store.state.currentAdmin || "Not Login" }}</div>
     <div v-if="$store.state.currentAdmin !== null" class="mt-1">
       <el-button @click="logout" type="danger">Logout</el-button>
     </div>
 
-    <!--    <UploadYoutube/>-->
+    <div class="text-xl mt-10">Agora App ID</div>
+
+    <UploadYoutube/>
   </div>
 </template>
 
 <script>
 
 import firebase from 'firebase'
-// import UploadYoutube from "@/components/UploadYoutube";
+import UploadYoutube from "@/components/UploadYoutube";
 import UploadAccount from "@/components/UploadAccount";
 
 export default {
   name: "Setting",
   components: {
-    // UploadYoutube,
+    UploadYoutube,
     UploadAccount
   },
   methods: {

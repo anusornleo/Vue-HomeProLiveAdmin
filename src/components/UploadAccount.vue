@@ -1,6 +1,6 @@
 <template>
-  <div class="mb-10">
-    <div v-if="isLogin" class="h-24 flex shadow-md rounded-md"
+  <div>
+    <div v-if="$store.state.googleApiUserAuth != null" class="h-24 flex shadow-md rounded-md"
          style="width: 30rem">
       <div class="h-24 w-24 rounded-md flex items-center justify-center">
         <img :src="$store.state.googleApiUserProfile.image" alt="" class="rounded-full w-18"/>
@@ -43,6 +43,7 @@ export default {
                 .then(user => {
                   if (user) {
                     this.isLogin = true
+                    console.log(window.gapi.auth2.getAuthInstance().currentUser)
                   } else {
                     console.log('No user is connected.')
                   }
@@ -69,6 +70,7 @@ export default {
           .then(() => {
             this.isLogin = false
             this.$store.commit('setGoogleApiUserProfile', null)
+            this.$store.commit('setGoogleApiUserAuth', null)
             let access_token = window.gapi.auth2.getAuthInstance().currentUser.le.wc.access_token;
             console.log(access_token)
           })

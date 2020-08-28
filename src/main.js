@@ -14,11 +14,11 @@ import VueGoogleApi from 'vue-google-api'
 // import axios from 'axios'
 
 const apiConfig = {
-    apiKey: 'AIzaSyAfJ0feb6uvIlJmZRhQ_0g8bkHKE9B5nRc',
-    clientId: '796362051879-hpugmhq0qvo4knok6lf6kbdk174k2773.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBpSHOVk8ulhFoHPrnfwWizCjwHPHPg0Vk',
+    clientId: '684192046274-v3d8p8fvn7is44g4a889v87jqbumgb28.apps.googleusercontent.com',
     discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'],
     // see all available scopes here: https://developers.google.com/identity/protocols/googlescopes'
-    scope: 'https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube',
+    scope: "https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtubepartner https://www.googleapis.com/auth/youtube.force-ssl",
 
     // works only with `ux_mode: "prompt"`
     refreshToken: true,
