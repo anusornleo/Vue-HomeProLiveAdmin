@@ -12,17 +12,43 @@
 
     <!--message in chat from user-->
     <div v-if="message.type === 'inchat' && message.role === 'user'">
-      <div class="bg-gray-300 inline-block px-3 py-1 rounded-lg mt-3" style="max-width: 500px">
-        <span class="text-primary font-bold">{{ message.username }}</span> : {{ message.message }}
+      <div v-if="message.url == null">
+        <div class="bg-gray-300 inline-block px-3 py-1 rounded-lg mt-3" style="max-width: 500px">
+          <span class="text-primary font-bold">{{ message.username }}</span> : {{ message.message }}
+        </div>
+      </div>
+      <div v-else>
+        <div class=" mt-3">
+          <div class="flex-col">
+            <img :src="message.url" alt="" class="w-56 rounded-lg">
+            <div v-if="message.message != null"
+                 class="relative bg-gray-300 inline-block px-3 py-1 rounded-lg "
+                 style="max-width: 500px;top: -10px">
+              {{ message.message }}
+            </div>
+          </div>
+        </div>
       </div>
       <div class="text-xs text-gray-500">{{ dateFormat(message.timeStamp.toDate()) }}</div>
     </div>
 
     <!--message in chat from admin-->
     <div v-if="message.type === 'inchat' && message.role === 'admin'">
-      <div class="flex justify-end">
+      <div v-if="message.url == null" class="flex justify-end">
         <div class="bg-primary text-white inline-block px-3 py-1 rounded-lg mt-3" style="max-width: 500px">
           {{ message.message }}
+        </div>
+      </div>
+      <div v-else>
+        <div class="flex justify-end mt-3 text-end">
+          <div class="flex-col" style="text-align: -webkit-right;">
+            <img :src="message.url" alt="" class="w-56 rounded-lg">
+            <div v-if="message.message != null"
+                 class="relative bg-primary text-white inline-block px-3 py-1 rounded-lg text-left"
+                 style="max-width: 500px;top: -10px">
+              {{ message.message }}
+            </div>
+          </div>
         </div>
       </div>
       <div class="text-right text-xs text-gray-500">{{ dateFormat(message.timeStamp.toDate()) }}</div>

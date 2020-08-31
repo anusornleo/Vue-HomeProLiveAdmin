@@ -4,7 +4,7 @@
     <Loader v-if="$store.state.isLoading"/>
     <LiveViewer v-if="$store.state.isLive" :endLive="false"/>
     <!--    <UploadYoutube v-if="$store.state.recordedVideo !== null"/>-->
-    <UploadYoutube/>
+    <UploadYoutube v-if="0===1"/>
     <div class=" pr-6" :class="$route.path === '/chat'?'pt-0 pl-20':'pt-4 pl-26'">
       <router-view/>
     </div>
