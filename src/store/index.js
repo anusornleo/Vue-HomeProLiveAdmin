@@ -9,6 +9,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        host: `${window.location.protocol}//${window.location.hostname}`,
         currentAdmin: null,
         currentMenu: 0,
         currentOption: null,
@@ -24,7 +25,8 @@ export default new Vuex.Store({
         isAdminReadCurrentChat: false,
         recordedVideo: null,
         googleApiUserProfile: null,
-        googleApiUserAuth: null
+        googleApiUserAuth: null,
+        productSelected: []
     },
     mutations: {
         setCurrentOption(state, option) {

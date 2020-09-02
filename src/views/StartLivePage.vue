@@ -75,7 +75,7 @@
         </div>
       </div>
       <div class="flex flex-wrap">
-        <CardProduct v-for="product in mockProduct" :key="product.id" :productData="product"/>
+        <CardProduct v-for="product in $store.state.productSelected" :key="product.id" :productData="product"/>
       </div>
     </div>
     <div v-else></div>
@@ -150,7 +150,7 @@ export default {
         });
       } else {
         this.canLive = true
-        this.prepareLive();
+        // this.prepareLive();
       }
     });
 
@@ -209,7 +209,8 @@ export default {
                     channelName: channel,
                     onLive: true,
                     title: this.modelTitle,
-                    thumbnail: url
+                    thumbnail: url,
+                    productInLive: this.$store.state.productSelected
                   }).then(() => {
 
                     // store current option in vuex
@@ -219,7 +220,8 @@ export default {
                       microphone: this.currentMicrophone,
                       channel: channel,
                       title: this.modelTitle,
-                      thumbnail: url
+                      thumbnail: url,
+                      productInLive: this.$store.state.productSelected
                     })
                     this.$store.commit('setIsLive', true) // change live state
 

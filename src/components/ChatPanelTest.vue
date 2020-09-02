@@ -172,7 +172,7 @@ export default {
             .doc(this.$store.state.selectChat)
             .update({
               isUserRead: false,
-              lastMsg: this.imagePreview == null ? 'admin sent image' : this.message,
+              lastMsg: this.imagePreview == null ? this.message : 'admin sent image',
               timeStamp: sentTime
             })
             .then(() => {
@@ -184,7 +184,8 @@ export default {
                       msg: this.message,
                       role: 'admin',
                       timeStamp: sentTime,
-                      username: 'admin'
+                      username: 'admin',
+                      url: ''
                     })
                 this.message = ''
               } else {
