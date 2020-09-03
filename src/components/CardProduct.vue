@@ -1,7 +1,7 @@
 <template>
   <div @click="addSelected()"
        :class="indexSelected?`bg-green-200 hover:bg-green-400`:`hover:bg-white_active`"
-       class="w-1/5 p-2 text-center shadow-md pb-10 rounded-lg cursor-pointer">
+       class="w-1/5 p-2 text-center shadow-md pb-10 rounded-lg cursor-pointer mr-3">
     <h3 class="text-info">SKU : {{ productData.sku }}</h3>
     <img
         class="my-3"

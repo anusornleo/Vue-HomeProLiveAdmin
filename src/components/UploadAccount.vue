@@ -43,7 +43,8 @@ export default {
                 .then(user => {
                   if (user) {
                     this.isLogin = true
-                    console.log(window.gapi.auth2.getAuthInstance().currentUser)
+                    let access_token = window.gapi.auth2.getAuthInstance().currentUser.le.wc;
+                    this.$store.commit('setGoogleApiUserAuth', access_token)
                   } else {
                     console.log('No user is connected.')
                   }
@@ -62,7 +63,7 @@ export default {
             this.isLogin = true
             let access_token = window.gapi.auth2.getAuthInstance().currentUser.le.wc;
             this.$store.commit('setGoogleApiUserAuth', access_token)
-            this.console.log(access_token)
+            console.log(window.gapi.auth2.getAuthInstance().currentUser)
           })
     },
     logout() {

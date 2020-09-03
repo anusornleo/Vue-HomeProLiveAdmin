@@ -3,18 +3,21 @@
     <div class="flex flex-wrap items-start justify-between">
       <h1 class="text-3xl mb-6">Home</h1>
     </div>
-    <h1>{{ status.type.name }} : {{ status.type.value }}</h1>
-    <h1>{{ status.effectiveType.name }} : {{ status.effectiveType.value }}</h1>
-    <h1>{{ status.rtt.name }} : {{ status.rtt.value }}</h1>
-    <h1>{{ status.downlink.name }} : {{ status.downlink.value }}</h1>
-    <h1>{{ status.downlinkMax.name }} : {{ status.downlinkMax.value }}</h1>
+    <div class="flex" style="height: 88vh;">
+      <HistoryLive/>
+    </div>
   </div>
 </template>
 
 <script>
+import HistoryLive from "@/components/Dashboards/HistoryLive";
+
 const log = console;
 export default {
   name: "Home",
+  components: {
+    HistoryLive
+  },
   data() {
     return {
       supported: true,

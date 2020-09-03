@@ -149,7 +149,7 @@ export default {
       this.isStartRecording = false;
       this.player.record().stop();
       // set delay to save video
-      setTimeout(this.submitVideo, 1000);
+      // setTimeout(this.submitVideo, 1000);
       // this.player.record().saveAs({video: "my-video-file-name.webm"});
     },
     submitVideo() {

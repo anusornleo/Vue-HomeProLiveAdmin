@@ -15,15 +15,15 @@
 
     <div class="text-xl mt-10">Agora App ID</div>
 
-    <input type='file' accept="image/jpeg" @change="previewImage"/>
-    <!--    <img class="h-64" :src="imagePreview" alt="">-->
-    <button @click="uploadImage">Upload</button>
+    <!--    <input type='file' accept="image/jpeg" @change="previewImage"/>-->
+    <!--    &lt;!&ndash;    <img class="h-64" :src="imagePreview" alt="">&ndash;&gt;-->
+    <!--    <button @click="uploadImage">Upload</button>-->
 
-    <h1>{{ $store.state.host }}</h1>
+    <!--    <h1>{{ $store.state.host }}</h1>-->
 
-    <button @click="createUser">Create User</button>
+    <!--    <button @click="createUser">Create User</button>-->
 
-    <div>User : {{ user }}</div>
+    <!--    <div>User : {{ user }}</div>-->
 
     <!--    <UploadYoutube/>-->
   </div>

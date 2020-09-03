@@ -178,6 +178,7 @@ export default {
           message: 'End Live Complete',
           type: 'success'
         });
+        this.$router.push({path: '/startlive'});
         // this.$store.commit('setCurrentOption', null)
       }).catch(e => {
         this.$notify({

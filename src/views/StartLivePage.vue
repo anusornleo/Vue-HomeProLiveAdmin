@@ -67,7 +67,7 @@
         </div>
       </div>
       <div class="flex flex-wrap items-center justify-between">
-        <h1 class="text-3xl my-3">Product in Live (12)</h1>
+        <h1 class="text-3xl my-3">Product in Live ({{ $store.state.productSelected.length }})</h1>
         <div
             @click="goFindProduct"
             class="text-xl my-3 items-baseline cursor-pointer bg-green-400 px-5 py-2 rounded-full hover:bg-green-500 text-white"
@@ -150,7 +150,7 @@ export default {
         });
       } else {
         this.canLive = true
-        // this.prepareLive();
+        this.prepareLive();
       }
     });
 
@@ -196,59 +196,63 @@ export default {
     },
     // start live now
     goLiveNow() {
-      this.$store.state.isLoading = true
       let channel = Date.now().toString() // define channel by datetime now
 
-      imageUpload.ref("thumbnail/" + channel + '.jpg').put(this.fileImage).then(
-          () => {
-            imageUpload.ref("thumbnail/" + channel + '.jpg').getDownloadURL()
-                .then((url) => {
-                  // save live data in firebase
-                  db.collection("CurrentLive").doc(channel).set({
-                    startTime: Date.now(),
-                    channelName: channel,
-                    onLive: true,
-                    title: this.modelTitle,
-                    thumbnail: url,
-                    productInLive: this.$store.state.productSelected
-                  }).then(() => {
-
-                    // store current option in vuex
-                    this.$store.commit('setCurrentOption', {
-                      appId: AGORA_APP_ID,
-                      camera: this.currentCamera,
-                      microphone: this.currentMicrophone,
-                      channel: channel,
+      if (this.fileImage !== null && this.modelTitle !== null) {
+        this.$store.state.isLoading = true
+        imageUpload.ref("thumbnail/" + channel + '.jpg').put(this.fileImage).then(
+            () => {
+              imageUpload.ref("thumbnail/" + channel + '.jpg').getDownloadURL()
+                  .then((url) => {
+                    // save live data in firebase
+                    db.collection("CurrentLive").doc(channel).set({
+                      startTime: Date.now(),
+                      channelName: channel,
+                      onLive: true,
                       title: this.modelTitle,
                       thumbnail: url,
                       productInLive: this.$store.state.productSelected
+                    }).then(() => {
+
+                      // store current option in vuex
+                      this.$store.commit('setCurrentOption', {
+                        appId: AGORA_APP_ID,
+                        camera: this.currentCamera,
+                        microphone: this.currentMicrophone,
+                        channel: channel,
+                        title: this.modelTitle,
+                        thumbnail: url,
+                        productInLive: this.$store.state.productSelected
+                      })
+                      this.$store.commit('setIsLive', true) // change live state
+
+                      this.$notify({
+                        title: 'Success',
+                        message: 'Start Live Success',
+                        type: 'success'
+                      });
+
+                      this.$store.state.isLoading = false
+
+                      // change route to live_now page
+                      this.$router.push({path: 'live_now'})
+                    }).catch(e => {
+                      this.$store.state.isLoading = false
+
+                      // notify if have error
+                      this.$notify({
+                        title: 'Error',
+                        message: e,
+                        type: 'error'
+                      });
                     })
-                    this.$store.commit('setIsLive', true) // change live state
-
-                    this.$notify({
-                      title: 'Success',
-                      message: 'Start Live Success',
-                      type: 'success'
-                    });
-
-                    this.$store.state.isLoading = false
-
-                    // change route to live_now page
-                    this.$router.push({path: 'live_now'})
-                  }).catch(e => {
-                    this.$store.state.isLoading = false
-
-                    // notify if have error
-                    this.$notify({
-                      title: 'Error',
-                      message: e,
-                      type: 'error'
-                    });
                   })
-                })
-                .catch()
-          }
-      ).catch()
+                  .catch()
+            }
+        ).catch()
+      }
+
+
     },
     goFindProduct() {
       // this.getVideo()

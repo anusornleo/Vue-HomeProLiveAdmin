@@ -20,7 +20,6 @@
     <div class="flex flex-wrap">
       <CardProduct v-for="product in products" :key="product.id" :productData="product"/>
     </div>
-    {{ $store.state.productSelected }}
   </div>
 </template>
 
