@@ -72,8 +72,8 @@ export default {
             this.isLogin = false
             this.$store.commit('setGoogleApiUserProfile', null)
             this.$store.commit('setGoogleApiUserAuth', null)
-            let access_token = window.gapi.auth2.getAuthInstance().currentUser.le.wc.access_token;
-            console.log(access_token)
+            // let access_token = window.gapi.auth2.getAuthInstance().currentUser.le.wc.access_token;
+            // console.log(access_token)
           })
     }
   },

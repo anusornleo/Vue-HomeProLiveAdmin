@@ -9,6 +9,7 @@ const LiveNow = () => import('../views/LiveNow')
 const ChatPage = () => import('../views/ChatPage')
 const LoginPage = () => import('../views/LoginPage')
 const RegisterPage = () => import('../views/RegisterPage')
+const HistoryView = () => import('../views/HistoryViewPage')
 
 Vue.use(VueRouter)
 
@@ -52,6 +53,11 @@ const routes = [
         path: '/register',
         name: 'RegisterPage',
         component: RegisterPage
+    },
+    {
+        path: '/history',
+        name: 'HistoryView',
+        component: HistoryView
     }
 ]
 

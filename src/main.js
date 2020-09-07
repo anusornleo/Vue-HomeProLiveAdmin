@@ -15,8 +15,8 @@ import Moment from 'moment'
 // import axios from 'axios'
 
 const apiConfig = {
-    apiKey: 'AIzaSyBAsktJZgIrrvYzhRt2sC_euUPFNXHUeMs',
-    clientId: '438699126931-ummkmmpttktk3kqbqvj7rids4lthg99m.apps.googleusercontent.com',
+    apiKey: 'AIzaSyD1gKmPJw9-8jykqQ_lmxU-H-Yqig7La_E',
+    clientId: '979129394288-sg781bk75pmprbu30f0421iiflin2tnv.apps.googleusercontent.com',
     discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'],
     // see all available scopes here: https://developers.google.com/identity/protocols/googlescopes'
     scope: "https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtubepartner https://www.googleapis.com/auth/youtube.force-ssl",

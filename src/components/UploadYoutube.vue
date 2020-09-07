@@ -4,7 +4,7 @@
     <!--    <button @click="uploadVideo">Upload</button>-->
     <div>Upload Record to Youtube</div>
     <el-progress :percentage="percent"></el-progress>
-    <i v-if="percent === 100" @click="close"
+    <i v-if="percent === 0" @click="close"
        class="el-icon-circle-close absolute bg-white p-1 rounded-full position-close shadow-md hover:bg-gray-300"></i>
   </div>
 </template>
@@ -25,7 +25,8 @@ export default {
   },
   created() {
     // setTimeout(this.uploadVideo, 5000)
-    // this.uploadVideo()
+    this.uploadVideo()
+
   },
   methods: {
     uploadVideo() {
@@ -34,7 +35,7 @@ export default {
       console.log("Uploaded Video")
       let metadata = {
         snippet: {
-          title: 'HomePro Live Test Demo 2',
+          title: 'HomePro Live Test In App',
           description: 'Test to upload HomePro Live in YouTube. It will show private for me.',
           tags: ['youtube-cors-upload', 'upload', 'homepro'],
           categoryId: 22
@@ -60,6 +61,7 @@ export default {
           try {
             let errorResponse = JSON.parse(data);
             message = errorResponse.error.message;
+            setTimeout(this.saveToLocal, 1500);
           } finally {
             alert(data);
           }
@@ -77,14 +79,17 @@ export default {
           let bytesPerSecond = bytesUploaded / ((currentTime) / 1000);
           let estimatedSecondsRemaining = (totalBytes - bytesUploaded) / bytesPerSecond;
           let percentageComplete = (bytesUploaded * 100) / totalBytes;
-          _this.percent = percentageComplete
+          _this.percent = Math.floor(percentageComplete)
 
           console.log(percentageComplete + " " + _this.percent)
 
           // console.log(bytesPerSecond + "\n" + estimatedSecondsRemaining + "\n" + percentageComplete)
         }
       })
-      uploader.upload();
+      // uploader.upload();
+    },
+    saveToLocal() {
+      this.$store.state.player.record().saveAs({video: "my-video-file-name.mp4"});
     },
     updateFirebase(videoId) {
       firebase.firestore().collection('CurrentLive').doc(this.$store.state.currentOption.channel).update({
@@ -93,6 +98,7 @@ export default {
     },
     close() {
       this.$store.state.recordedVideo = null
+      this.$store.state.inUpload = false
     }
   },
   mounted() {
@@ -100,14 +106,14 @@ export default {
     recaptchaScript.setAttribute('src', 'cors_upload.js')
     document.head.appendChild(recaptchaScript)
   },
-  watch: {
-    '$store.state.recordedVideo'(val) {
-      if (val != null) {
-        console.log("next to upload")
-        this.uploadVideo()
-      }
-    }
-  }
+  // watch: {
+  //   '$store.state.recordedVideo'(val) {
+  //     if (val != null) {
+  //       console.log("next to upload")
+  //       this.uploadVideo()
+  //     }
+  //   }
+  // }
 }
 </script>
 

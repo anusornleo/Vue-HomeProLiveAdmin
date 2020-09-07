@@ -26,7 +26,9 @@ export default new Vuex.Store({
         recordedVideo: null,
         googleApiUserProfile: null,
         googleApiUserAuth: null,
-        productSelected: []
+        productSelected: [],
+        inUpload: false,
+        player: null
     },
     mutations: {
         setCurrentOption(state, option) {

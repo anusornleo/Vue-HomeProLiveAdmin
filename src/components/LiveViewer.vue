@@ -149,11 +149,12 @@ export default {
       this.isStartRecording = false;
       this.player.record().stop();
       // set delay to save video
-      // setTimeout(this.submitVideo, 1000);
+      setTimeout(this.submitVideo, 1000);
       // this.player.record().saveAs({video: "my-video-file-name.webm"});
     },
     submitVideo() {
-      this.player.record().saveAs({video: "my-video-file-name.mp4"});
+      this.$store.state.player = this.player
+      // this.player.record().saveAs({video: "my-video-file-name.mp4"});
     },
     goHome() {
       this.$router.push({path: '/'})
@@ -216,6 +217,7 @@ export default {
     this.player.on("finishRecord", () => {
       this.isSaveDisabled = false;
       this.$store.state.recordedVideo = this.player.recordedData
+      this.$store.state.inUpload = true
       console.log("##################Finish record")
       console.log(this.player.recordedData);
     });

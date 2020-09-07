@@ -2,7 +2,7 @@
   <div class="w-100 m-3 flex p-3 shadow-md rounded-lg bg-white">
     <img :src="data.thumbnail" alt="" class="w-26 h-26 rounded">
     <div class="ml-3 flex-1" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-      <div class="font-medium">{{ $store.state.currentOption.title }}</div>
+      <div class="font-medium">{{ data.title }}</div>
       <div class="text-sm text-gray-500">{{ dateFormat(data.startTime) }}</div>
       <div>Status :
         <span v-if="data.onLive" class="text-red-500">Live</span>
