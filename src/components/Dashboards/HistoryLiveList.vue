@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100 m-3 flex p-3 shadow-md rounded-lg bg-white">
+  <div @click="goHistory" class="w-100 m-3 flex p-3 shadow-md rounded-lg bg-white">
     <img :src="data.thumbnail" alt="" class="w-26 h-26 rounded">
     <div class="ml-3 flex-1" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
       <div class="font-medium">{{ data.title }}</div>
@@ -26,6 +26,9 @@ export default {
       return moment(sec).format("LLL");
       // return sec;
     },
+    goHistory() {
+      this.$router.push({name: "HistoryView", params: {id: this.data.channelName}});
+    }
   },
   computed: {}
 }

@@ -222,7 +222,6 @@ export default {
   },
   watch: {
     '$store.state.selectChat'() {
-      this.currentRef()
       this.loadChat()
     }
   }

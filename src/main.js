@@ -9,6 +9,7 @@ import {firebaseConfig} from './config/firebase.config'
 import firebase from 'firebase'
 import VueGoogleApi from 'vue-google-api'
 import Moment from 'moment'
+import VueYouTubeEmbed from 'vue-youtube-embed'
 // import VueGAPI from 'vue-gapi'
 // import '@/cors_upload'
 
@@ -32,6 +33,7 @@ firebase.initializeApp(firebaseConfig)
 Vue.use(VueGoogleApi, apiConfig)
 Vue.use(ElementUI);
 Vue.use(Moment)
+Vue.use(VueYouTubeEmbed, {global: true, componentId: "youtube-media"})
 // Vue.use(axios)
 
 new

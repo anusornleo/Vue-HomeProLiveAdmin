@@ -55,7 +55,7 @@ const routes = [
         component: RegisterPage
     },
     {
-        path: '/history',
+        path: '/history/:id',
         name: 'HistoryView',
         component: HistoryView
     }

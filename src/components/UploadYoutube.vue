@@ -30,12 +30,13 @@ export default {
   },
   methods: {
     uploadVideo() {
+      setTimeout(this.saveToLocal, 1500);
       let _this = this
       // this.$store.state.recordedVideo = null
       console.log("Uploaded Video")
       let metadata = {
         snippet: {
-          title: 'HomePro Live Test In App',
+          title: this.$store.state.currentOption.title,
           description: 'Test to upload HomePro Live in YouTube. It will show private for me.',
           tags: ['youtube-cors-upload', 'upload', 'homepro'],
           categoryId: 22
